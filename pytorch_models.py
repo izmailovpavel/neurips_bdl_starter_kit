@@ -204,3 +204,34 @@ def make_resnet20_frn_fn(data_info, activation=torch.nn.ReLU()):
     return make_resnet_fn(
       num_classes, depth=20, normalization_layer=FilterResponseNorm,
       activation=activation)
+
+# jax version
+# def get_model(model_name, data_info, **kwargs):
+#   _MODEL_FNS = {
+#     "lenet": make_lenet5_fn,
+#     "resnet20": make_resnet20_fn,
+#     "resnet20_frn": make_resnet20_frn_fn,
+#     "resnet20_frn_swish": functools.partial(
+#       make_resnet20_frn_fn, activation=jax.nn.swish),
+#     "cnn_lstm": make_cnn_lstm,
+#     "smooth_cnn_lstm": make_smooth_cnn_lstm,
+#     "mlp_regression": make_mlp_regression,
+#     "mlp_regression_small": make_mlp_regression_small,
+#     "mlp_classification": make_mlp_classification,
+#     "logistic_regression": make_logistic_regression,
+#   }
+#   net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
+#   net = hk.transform(net_fn)
+#   return net.apply, net.init
+
+
+
+# pytorch version
+def get_model(model_name, data_info, **kwargs):
+  _MODEL_FNS = {
+    "resnet20_frn": make_resnet20_frn_fn,
+    "resnet20_frn_swish": functools.partial(
+      make_resnet20_frn_fn, activation=torch.nn.SiLU()),
+  }
+  net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
+  return net_fn
