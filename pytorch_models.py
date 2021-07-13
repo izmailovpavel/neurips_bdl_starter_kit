@@ -1,6 +1,7 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
+from functools import partial
 
 # import haiku as hk
 # import jax
@@ -230,7 +231,7 @@ def make_resnet20_frn_fn(data_info, activation=torch.nn.ReLU()):
 def get_model(model_name, data_info, **kwargs):
   _MODEL_FNS = {
     "resnet20_frn": make_resnet20_frn_fn,
-    "resnet20_frn_swish": functools.partial(
+    "resnet20_frn_swish": partial(
       make_resnet20_frn_fn, activation=torch.nn.SiLU()),
   }
   net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
