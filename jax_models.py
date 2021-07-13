@@ -236,5 +236,5 @@ def get_model(model_name, data_info, **kwargs):
     "logistic_regression": make_logistic_regression,
   }
   net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
-  net = hk.transform_with_state(net_fn)
+  net = hk.transform(net_fn)
   return net.apply, net.init
