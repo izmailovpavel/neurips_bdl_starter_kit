@@ -94,7 +94,7 @@ class stacked_resnet_block(nn.Module):
 class make_resnet_fn(nn.Module):
     def __init__(self, num_classes, depth, normalization_layer,
                  width=16, use_bias=True, activation=torch.nn.ReLU(inplace=True)):
-        super(make_resnet_fn_test,self).__init__()
+        super(make_resnet_fn,self).__init__()
         self.num_res_blocks = (depth - 2) // 6
         self.normalization_layer = normalization_layer
         self.activation = activation
