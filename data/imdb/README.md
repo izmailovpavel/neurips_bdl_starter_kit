@@ -1,4 +1,4 @@
-# Cifar-10
+# IMDB
 
 IMDB is a binary classification, sentiment dataset. Please refer to
 [the website](https://ai.stanford.edu/~amaas/data/sentiment/) for more information.
