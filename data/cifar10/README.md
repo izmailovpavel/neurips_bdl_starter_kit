@@ -39,7 +39,7 @@ The HMC predictions are contained in `probs.csv`, which can be loaded via NumPy 
 
 ```python
 import numpy as np
-predictions = np.loadtxt("probs.csv", delimiter=",", dtype=np.float32)
+predictions = np.loadtxt("probs.csv", dtype=np.float32)
 ```
 
 `predictions` will be an N x C (number of data points by number of classes)
