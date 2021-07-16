@@ -3,7 +3,7 @@
 This is a starting kit for the BDL competition.
 
 Included are two IPython notebooks (one for PyTorch, one for JAX) that show
-how to create an initial submission.
+how to create an initial submission. Also included is an example submission for reference.
 
 ## Colabs
 Here are colab links to the notebooks:
