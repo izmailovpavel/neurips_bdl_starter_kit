@@ -31,7 +31,8 @@ _DEFAULT_BN_CONFIG = {
 }
 
 
-def make_retinopathy_cnn(num_classes, **_):
+def make_retinopathy_cnn(data_info):
+  num_classes = data_info["num_classes"]
   act = jax.nn.relu
 
   def forward(x, is_training=True):
