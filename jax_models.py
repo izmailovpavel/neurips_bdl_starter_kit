@@ -31,6 +31,39 @@ _DEFAULT_BN_CONFIG = {
 }
 
 
+def make_retinopathy_cnn(num_classes, **_):
+  act = jax.nn.relu
+
+  def forward(x, is_training=True):
+    """Simple CNN for diabetic retinopathy classification."""
+    x = x.astype(jnp.float32)
+    cnn = hk.Sequential([
+        hk.Conv2D(output_channels=32, kernel_shape=3, padding='SAME'),
+        act,
+        hk.Conv2D(output_channels=32, kernel_shape=3, padding='SAME'),
+        act,
+        hk.MaxPool(window_shape=2, strides=2, padding='SAME'),
+        hk.Conv2D(output_channels=32, kernel_shape=3, padding='SAME'),
+        act,
+        hk.Conv2D(output_channels=32, kernel_shape=3, padding='SAME'),
+        act,
+        hk.MaxPool(window_shape=2, strides=2, padding='SAME'),
+        hk.Conv2D(output_channels=16, kernel_shape=3, padding='SAME'),
+        act,
+        hk.MaxPool(window_shape=2, strides=2, padding='SAME'),
+        hk.Conv2D(output_channels=16, kernel_shape=3, padding='SAME'),
+        act,
+        hk.MaxPool(window_shape=2, strides=2, padding='SAME'),
+        hk.Flatten(),
+        hk.Linear(128),
+        act,
+        hk.Linear(num_classes),
+    ])
+    return cnn(x)
+
+  return forward
+
+
 def make_lenet5_fn(data_info):
     num_classes = data_info["num_classes"]
 
@@ -223,6 +256,7 @@ def make_logistic_regression(data_info):
   
 def get_model(model_name, data_info, **kwargs):
   _MODEL_FNS = {
+    "retinopathy_cnn": make_retinopathy_cnn,
     "lenet": make_lenet5_fn,
     "resnet20": make_resnet20_fn,
     "resnet20_frn": make_resnet20_frn_fn,
