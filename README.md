@@ -11,3 +11,5 @@ We include 4 ipython notebooks:
 * [Evaluation phase: getting started [PyTorch]](https://colab.research.google.com/github/izmailovpavel/neurips_bdl_starter_kit/blob/main/evaluation_phase_pytorch.ipynb)
 
 We also include the [metrics.py](https://github.com/izmailovpavel/neurips_bdl_starter_kit/blob/main/metrics.py) code that is used to evaluate the submissions. For development phase datasets we also include the target [HMC predictions](https://github.com/izmailovpavel/neurips_bdl_starter_kit/tree/main/data).
+
+Finally, we include sample submissions for the [light track](https://github.com/izmailovpavel/neurips_bdl_starter_kit/blob/main/light_track_submission.zip) and [extended track](https://github.com/izmailovpavel/neurips_bdl_starter_kit/blob/main/extended_track_submission.zip) for submission format reference.
