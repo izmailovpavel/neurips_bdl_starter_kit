@@ -14,3 +14,7 @@ def agreement(predictions: np.array, reference: np.array):
 def total_variation_distance(predictions: np.array, reference: np.array):
     """Returns total variation distance."""
     return np.abs(predictions - reference).sum(axis=-1).mean() / 2.
+
+ def w2_distance(predictions: np.array, reference: np.array):
+ 	"""Returns W-2 distance """
+ 	return 0.0 
