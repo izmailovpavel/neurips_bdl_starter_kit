@@ -194,6 +194,25 @@ def make_cifar_alexnet(data_info):
     )
 
 
+def make_medmnist_cnn(data_info):
+    num_classes = data_info["num_classes"]
+    act = torch.nn.ReLU
+    return nn.Sequential(
+        nn.Conv2d(3, 6, kernel_size=5, padding=2),
+        act(),
+        nn.AvgPool2d(2, stride=2, padding=0),
+        nn.Conv2d(6, 16, kernel_size=5, padding=0),
+        act(),
+        nn.AvgPool2d(2, stride=2, padding=0),
+        nn.Flatten(),
+        nn.Linear(400, 120),
+        act(),
+        nn.Linear(120, 84),
+        act(),
+        nn.Linear(84, num_classes),
+    )
+
+
 # pytorch version
 def get_model(model_name, data_info, **kwargs):
   _MODEL_FNS = {
@@ -202,6 +221,8 @@ def get_model(model_name, data_info, **kwargs):
       make_resnet20_frn_fn, activation=torch.nn.SiLU),
     "retinopathy_cnn": make_retinopathy_cnn,
     "cifar_alexnet": make_cifar_alexnet,
+    "medmnist_lenet": make_medmnist_cnn,
+    "uci_mlp": None,
   }
   net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
   return net_fn
