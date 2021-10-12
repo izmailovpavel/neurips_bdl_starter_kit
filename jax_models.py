@@ -36,7 +36,7 @@ def make_cifar_alexnet(data_info):
   # act = jax.nn.relu
   act = jax.nn.swish
 
-  def forward(x):
+  def forward(x, is_training=True):
     x = x.astype(jnp.float32)
     net = hk.Sequential([  # [32, 32, 3]
         hk.Conv2D(output_channels=64, kernel_shape=3,
