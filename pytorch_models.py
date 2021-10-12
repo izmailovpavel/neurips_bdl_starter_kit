@@ -213,6 +213,16 @@ def make_medmnist_cnn(data_info):
     )
 
 
+def make_uci_mlp(data_info):
+    num_features = data_info["num_features"]
+    act = torch.nn.ReLU
+    return nn.Sequential(
+        nn.Linear(num_features, 50),
+        act(),
+        nn.Linear(50, 2),
+    )
+
+
 # pytorch version
 def get_model(model_name, data_info, **kwargs):
   _MODEL_FNS = {
@@ -222,7 +232,7 @@ def get_model(model_name, data_info, **kwargs):
     "retinopathy_cnn": make_retinopathy_cnn,
     "cifar_alexnet": make_cifar_alexnet,
     "medmnist_lenet": make_medmnist_cnn,
-    "uci_mlp": None,
+    "uci_mlp": make_uci_mlp,
   }
   net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
   return net_fn
