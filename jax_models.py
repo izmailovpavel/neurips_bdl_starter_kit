@@ -33,7 +33,8 @@ _DEFAULT_BN_CONFIG = {
 
 def make_cifar_alexnet(data_info):
   num_classes = data_info["num_classes"]
-  act = jax.nn.relu
+  # act = jax.nn.relu
+  act = jax.nn.swish
 
   def forward(x):
     x = x.astype(jnp.float32)
@@ -62,7 +63,7 @@ def make_cifar_alexnet(data_info):
         act,
         hk.Linear(256),
         act,
-        hk.Linear(10),
+        hk.Linear(num_classes),
     ])
     return net(x)
 
