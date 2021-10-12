@@ -163,7 +163,7 @@ def make_retinopathy_cnn(data_info):
         nn.Flatten(),
         nn.Linear(256, 128),
         nn.ReLU(),
-        nn.Linear(128, 2),
+        nn.Linear(128, num_classes),
     )
 
 

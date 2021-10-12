@@ -31,7 +31,47 @@ _DEFAULT_BN_CONFIG = {
 }
 
 
-def make_retinopathy_cnn(num_classes, **_):
+def make_cifar_alexnet(data_info):
+  num_classes = data_info["num_classes"]
+  # act = jax.nn.relu
+  act = jax.nn.swish
+
+  def forward(x):
+    x = x.astype(jnp.float32)
+    net = hk.Sequential([  # [32, 32, 3]
+        hk.Conv2D(output_channels=64, kernel_shape=3,
+                  padding='SAME'),  # [32, 32, 64]
+        act,
+        hk.MaxPool(window_shape=(2, 2, 1), strides=(2, 2, 1),
+                   padding='VALID'),  # [16, 16, 64]
+        hk.Conv2D(output_channels=128, kernel_shape=3,
+                  padding='SAME'),  # [16, 16, 128]
+        act,
+        hk.MaxPool(window_shape=(2, 2, 1), strides=(2, 2, 1),
+                   padding='VALID'),  # [8, 8, 128]
+        hk.Conv2D(output_channels=256, kernel_shape=2,
+                  padding='SAME'),  # [8, 8, 256]
+        act,
+        hk.Conv2D(output_channels=128, kernel_shape=2,
+                  padding='SAME'),  # [8, 8, 128]
+        act,
+        hk.Conv2D(output_channels=64, kernel_shape=2,
+                  padding='SAME'),  # [8, 8, 64]
+        act,
+        hk.Flatten(),
+        hk.Linear(256),
+        act,
+        hk.Linear(256),
+        act,
+        hk.Linear(num_classes),
+    ])
+    return net(x)
+
+  return forward
+
+
+def make_retinopathy_cnn(data_info):
+  num_classes = data_info["num_classes"]
   act = jax.nn.relu
 
   def forward(x, is_training=True):
@@ -66,23 +106,23 @@ def make_retinopathy_cnn(num_classes, **_):
 
 def make_lenet5_fn(data_info):
     num_classes = data_info["num_classes"]
+    act = jax.nn.relu
 
     def lenet_fn(x, is_training):
         """Network inspired by LeNet-5."""
 
         cnn = hk.Sequential([
             hk.Conv2D(output_channels=6, kernel_shape=5, padding="SAME"),
-            jax.nn.relu,
-            hk.MaxPool(window_shape=3, strides=2, padding="VALID"),
-            hk.Conv2D(output_channels=16, kernel_shape=5, padding="SAME"),
-            jax.nn.relu,
-            hk.MaxPool(window_shape=3, strides=2, padding="VALID"),
-            hk.Conv2D(output_channels=120, kernel_shape=5, padding="SAME"),
-            jax.nn.relu,
-            hk.MaxPool(window_shape=3, strides=2, padding="VALID"),
+            act,
+            hk.AvgPool(window_shape=2, strides=2, padding="VALID"),
+            hk.Conv2D(output_channels=16, kernel_shape=5, padding="VALID"),
+            act,
+            hk.AvgPool(window_shape=2, strides=2, padding="VALID"),
             hk.Flatten(),
+            hk.Linear(120),
+            act,
             hk.Linear(84),
-            jax.nn.relu,
+            act,
             hk.Linear(num_classes),
         ])
         return cnn(x)
@@ -257,7 +297,9 @@ def make_logistic_regression(data_info):
 def get_model(model_name, data_info, **kwargs):
   _MODEL_FNS = {
     "retinopathy_cnn": make_retinopathy_cnn,
-    "lenet": make_lenet5_fn,
+    "cifar_alexnet": make_cifar_alexnet,
+    "medmnist_lenet": make_lenet5_fn,
+    "uci_mlp": make_mlp_regression_small,
     "resnet20": make_resnet20_fn,
     "resnet20_frn": make_resnet20_frn_fn,
     "resnet20_frn_swish": functools.partial(
@@ -265,7 +307,6 @@ def get_model(model_name, data_info, **kwargs):
     "cnn_lstm": make_cnn_lstm,
     "smooth_cnn_lstm": make_smooth_cnn_lstm,
     "mlp_regression": make_mlp_regression,
-    "mlp_regression_small": make_mlp_regression_small,
     "mlp_classification": make_mlp_classification,
     "logistic_regression": make_logistic_regression,
   }
