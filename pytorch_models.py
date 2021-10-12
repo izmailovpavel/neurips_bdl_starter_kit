@@ -135,11 +135,13 @@ class make_resnet_fn(nn.Module):
         num_filters *= 2
       return nn.Sequential(*layers)
 
+
 def make_resnet20_frn_fn(data_info, activation=torch.nn.ReLU):
     num_classes = data_info["num_classes"]
     return make_resnet_fn(
       num_classes, depth=20, normalization_layer=FilterResponseNorm_layer,
       activation=activation)
+
 
 def make_retinopathy_cnn(data_info):
     num_classes = data_info["num_classes"]
@@ -167,6 +169,31 @@ def make_retinopathy_cnn(data_info):
     )
 
 
+def make_cifar_alexnet(data_info):
+    num_classes = data_info["num_classes"]
+    act = torch.nn.SiLU
+    return nn.Sequential(
+        nn.Conv2d(3, 64, kernel_size=3, padding=1),
+        act(),
+        nn.MaxPool2d(2, stride=2, padding=0),
+        nn.Conv2d(64, 128, kernel_size=3, padding=1),
+        act(),
+        nn.MaxPool2d(2, stride=2, padding=0),
+        nn.Conv2d(128, 256, kernel_size=2, padding="same"), # padding?
+        act(),
+        nn.Conv2d(256, 128, kernel_size=2, padding="same"), # padding?
+        act(),
+        nn.Conv2d(128, 64, kernel_size=2, padding="same"), # padding?
+        act(),
+        nn.Flatten(),
+        nn.Linear(4096, 256),
+        act(),
+        nn.Linear(256, 256),
+        act(),
+        nn.Linear(256, num_classes),
+    )
+
+
 # pytorch version
 def get_model(model_name, data_info, **kwargs):
   _MODEL_FNS = {
@@ -174,6 +201,7 @@ def get_model(model_name, data_info, **kwargs):
     "resnet20_frn_swish": partial(
       make_resnet20_frn_fn, activation=torch.nn.SiLU),
     "retinopathy_cnn": make_retinopathy_cnn,
+    "cifar_alexnet": make_cifar_alexnet,
   }
   net_fn = _MODEL_FNS[model_name](data_info, **kwargs)
   return net_fn
