@@ -19,8 +19,8 @@ def total_variation_distance(predictions: np.array, reference: np.array):
 
 def w2_distance(predictions: np.array, reference: np.array):
     """Returns W-2 distance """
-  NUM_SAMPLES_REQUIRED = 1000
-  assert predictions.shape[0] == reference.shape[0], "wrong predictions shape"
-  assert predictions.shape[1] == NUM_SAMPLES_REQUIRED, "wrong number of samples"
-  return -np.mean([scipy.stats.wasserstein_distance(pred, ref) for 
+    NUM_SAMPLES_REQUIRED = 1000
+    assert predictions.shape[0] == reference.shape[0], "wrong predictions shape"
+    assert predictions.shape[1] == NUM_SAMPLES_REQUIRED, "wrong number of samples"
+    return -np.mean([scipy.stats.wasserstein_distance(pred, ref) for 
                    pred, ref in zip(predictions, reference)])
