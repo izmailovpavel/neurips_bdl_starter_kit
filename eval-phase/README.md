@@ -37,10 +37,11 @@ For CIFAR-10, [@PaulScemama](https://github.com/PaulScemama) kindly provided the
 - `'x_train'`: 50k training images for Cifar10.
 - `'y_train'`: 50k training labels for Cifar10.
 - `'x_test_v1'`: 10k test images from the Original Cifar10
-- `'x_test_v2'`: 10k test images from a corrupted version of Cifar10
-- `'x_test_v3'`: 10k test images from a corrupted version of Cifar10
-- `'x_test_v4'`: 10k test images from a corrupted version of Cifar10
-- `'x_test_v5'`: 10k test images from a corrupted version of Cifar10
+- `'x_test_v2'`: 10k test images from a corrupted version of Cifar10 (`cifar10_corrupted/gaussian_noise_2`)
+- `'x_test_v3'`: 10k test images from a corrupted version of Cifar10 (`cifar10_corrupted/brightness_3`)
+- `'x_test_v4'`: 10k test images from a corrupted version of Cifar10 (`cifar10_corrupted/pixelate_4`)
+- `'x_test_v5'`: 10k test images from a corrupted version of Cifar10 (`cifar10_corrupted/zoom_blur_5`)
 - `'y_test'`: 10k test labels for the test images of Cifar10 (all the same for each version of images).
+
 
 The data is available [here](https://drive.google.com/file/d/1buxwqOaXkCo26ZVhOIosB4lNBO6FTmRS/view?usp=sharing).
